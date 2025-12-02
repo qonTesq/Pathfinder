@@ -1,6 +1,6 @@
 # Pathfinder
 
-Pathfinder is a robot pathfinding application designed for hospital floor plan navigation. It utilizes algorithms like A* and Dijkstra to compute optimal paths, providing a graphical interface for visualizing and interacting with hospital floorplans. The application supports features such as floorplan editing, ward information display, and cross-platform support.
+Pathfinder is a robot pathfinding application designed for hospital floor plan navigation. It utilizes algorithms like A* and Dijkstra to compute optimal paths, providing a graphical interface for visualizing and interacting with hospital floorplan.
 
 ## Installation
 
