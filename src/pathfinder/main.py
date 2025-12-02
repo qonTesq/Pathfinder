@@ -69,11 +69,11 @@ def main() -> None:
         logger.info("Loading floorplan data from Python module")
 
         # Initialize edge_walls.json by copying bundled default to writable location
-        # In development: uses src/pathfinder/data/edge_walls.json
-        # In bundled exe: copies to same directory as the .exe
+        # Dev: src/pathfinder/data/edge_walls.json
+        # Prod: data/edge_walls.json (next to .exe)
         edge_walls_path = initialize_user_data(
             "src/pathfinder/data/edge_walls.json",  # Bundled default file
-            "edge_walls.json",  # User file next to .exe (or in src/pathfinder/data/ in dev)
+            "edge_walls.json",  # User file in data/ folder
         )
 
         # Initialize floor plan manager with floor plan data

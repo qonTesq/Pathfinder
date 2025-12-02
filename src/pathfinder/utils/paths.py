@@ -90,13 +90,12 @@ def get_writable_path(relative_path: str) -> Path:
 
     This function returns a writable location for user data files:
 
-    1. **Development mode**: Writes to project directory (src/app/data/)
-    2. **PyInstaller bundle**: Writes to same directory as the .exe
+    1. **Development mode**: Writes to project directory (src/pathfinder/data/)
+    2. **PyInstaller bundle**: Writes to data/ folder next to the .exe
 
-    This approach keeps user data next to the executable, making it easy to:
-    - Find and back up the data file
+    This approach keeps user data in a clean location:
+    - Easy to find and back up the data file
     - Move the app by copying the entire folder
-    - Delete all app data by removing the folder
 
     Args:
         relative_path: Filename for the writable file.
@@ -113,7 +112,7 @@ def get_writable_path(relative_path: str) -> Path:
 
         >>> # Or when bundled:
         >>> print(edge_walls)
-        Path('C:/Users/.../PATHFINDER/edge_walls.json')  # Next to .exe
+        Path('C:/Users/.../PATHFINDER/data/edge_walls.json')  # In data/ next to .exe
 
         >>> # Use with FloorplanManager
         >>> from pathfinder.data import FloorplanManager
@@ -121,7 +120,7 @@ def get_writable_path(relative_path: str) -> Path:
         >>> manager = FloorplanManager(floorplan_data, edge_walls_path=data_path)
 
     Notes:
-        - In bundled mode, the file is created in the same directory as the .exe
+        - In bundled mode, the file is created in data/ folder next to the .exe
         - Ensures parent directories exist before returning the path
         - User must have write permissions to the directory (may fail in Program Files)
         - Consider running from a user-writable location like Desktop or Documents
@@ -130,21 +129,23 @@ def get_writable_path(relative_path: str) -> Path:
         - get_resource_path for read-only bundled resources
     """
     try:
-        # Running as PyInstaller bundle - use directory where .exe is located
+        # Running as PyInstaller bundle - use data/ folder next to .exe
         # This check detects if we're in a bundled executable
         _ = sys._MEIPASS  # type: ignore[attr-defined]
 
-        # Get the directory containing the executable
+        # Get the directory containing the executable, then use data/ subfolder
         # sys.executable points to the .exe file when bundled
-        base_path = Path(sys.executable).parent
+        base_path = Path(sys.executable).parent / "data"
 
     except AttributeError:
         # Running in development mode - use project data directory
         # Calculate base path as project root (4 levels up from this file)
-        base_path = Path(__file__).parent.parent.parent.parent / "src" / "pathfinder" / "data"
+        base_path = (
+            Path(__file__).parent.parent.parent.parent / "src" / "pathfinder" / "data"
+        )
 
-        # Ensure directory exists in development
-        base_path.mkdir(parents=True, exist_ok=True)
+    # Ensure directory exists
+    base_path.mkdir(parents=True, exist_ok=True)
 
     # Combine base path with relative path and return
     return base_path / relative_path

@@ -174,16 +174,12 @@ def create_executable() -> Path:
 
     print("  Running PyInstaller...")
     print(f"  Command: {' '.join(cmd)}")
+    print()
 
-    # Run PyInstaller
-    result = subprocess.run(
-        cmd,
-        capture_output=True,
-        text=True,
-    )
+    # Run PyInstaller (no capture_output so we see progress in real-time)
+    result = subprocess.run(cmd)
 
     if result.returncode != 0:
-        print(f"\nPyInstaller failed:\n{result.stderr}")
         raise RuntimeError("Failed to create executable with PyInstaller")
 
     # Determine output path
