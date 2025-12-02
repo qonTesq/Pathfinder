@@ -1,0 +1,60 @@
+[project]
+name = "pathfinder"
+version = "1.0.0"
+description = "Pathfinder, a pathfinding application for hospital floor plan navigation using A* and Dijkstra algorithms"
+requires-python = ">=3.14"
+keywords = ["pathfinding", "robotics", "hospital", "navigation", "a-star", "dijkstra"]
+readme = "README.md"
+classifiers = [
+    "Intended Audience :: Education",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.14",
+]
+dependencies = [
+    "darkdetect>=0.8.0",
+    "numpy>=2.3.4",
+    "pywinstyles>=1.8",
+    "sv-ttk>=2.6.1",
+]
+
+[project.scripts]
+pathfinder = "pathfinder:main"
+
+[build-system]
+requires = ["uv_build>=0.9.3,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pyinstaller>=6.16.0",
+    "opencv-python>=4.11.0",
+    "opencv-stubs>=0.0.9",
+]
+
+[tool.uv]
+# Require a specific minimum version of uv for consistency
+required-version = ">=0.5.0"
+
+# Compile Python files to bytecode for faster startup times
+compile-bytecode = true
+
+# Cache keys to invalidate cache when important files change
+cache-keys = [
+    { file = "pyproject.toml" },
+    { file = "uv.lock" },
+    { dir = "src/pathfinder/data" },
+    { dir = "src/pathfinder/assets" }
+]
+
+[tool.basedpyright]
+typeCheckingMode = "standard"
+reportConstantRedefinition = true
+reportDeprecated = true
+reportDuplicateImport = true
+reportIgnoreCommentWithoutRule = true
+reportMatchNotExhaustive = true
+reportUnnecessaryCast = true
+reportUnnecessaryComparison = true
+reportUnnecessaryContains = true
+reportUnnecessaryIsInstance = true
